@@ -2,6 +2,12 @@
 
 Flutter project example to manage internationalization (different languages) using JSON file
 
+## Screenshots examples
+
+![Example 1 : English](screenshots/english.png)
+
+![Example 2 : French](screenshots/french.png)
+
 ## How to
 
 * Copy the directory `lib/internalialization/` in your `lib/` directory
@@ -17,10 +23,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_localizations: # ADD THIS
-    sdk: flutter # AND THIS
+    sdk: flutter # ADD THIS
+
+flutter:
+    assets: # ADD THIS
+        - lib/internationalization/i18n/ # ADD THIS
 ```
 
-* After that you can use this import
+* After that you can use this :
 
 ```dart
 // ADD THIS IMPORT 
@@ -39,6 +49,40 @@ localizationsDelegates: [
 supportedLocales: supportedLanguages.map(
     (language) => Locale(language, '')
 ),
+```
+
+* **OR** in another way (using FutureBuilder):
+
+```dart
+// ADD THIS IMPORT
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'internationalization/Internationalization.dart';
+import 'internationalization/init_i18n.dart';
+
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Map<String, Map<String, String>>>(
+        future: initializeI18n(), // Retrieves JSON language files
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // We check if we have data in snapshot (if snapshot is empty we cannot construct the MaterialApp)
+          if (snapshot.hasData) {
+            return MaterialApp(
+              /// For internationalization
+              localizationsDelegates: [
+                // here snapshot.data contain the localized values needed for `[Internationalization()]`
+                InternationalizationDelegate(snapshot.data),
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: supportedLanguages.map((language) => Locale(language, '')),
+              home: FirstPage(),
+            );
+          }
+          return CircularProgressIndicator();
+        });
+  }
+}
 ```
 
 * If you are in another file do not forget the import (Change according to the path):
@@ -77,11 +121,15 @@ String helloText = Internationalization.of(context).greetTo('hello');
 Text(Internationalization.of(context).greetTo('hello'),),
 ```
 
-## Screenshots examples
+## Run / Test
 
-![Example 1 : English](screenshots/english.png)
+When you are on lib/main.dart, there are two functions :
 
-![Example 2 : French](screenshots/french.png)
+* main() // we use a FutureBuilder
+* mainn()
+
+You can replace mainn() for main() and test the other architecture  
+I recommand the `FutureBuilder()` architecture
 
 ## Author
 

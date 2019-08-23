@@ -62,8 +62,8 @@ class _SecondPageState extends State<SecondPage> {
                   Text(Internationalization.of(context).greetTo('changeLang')),
               onPressed: () {
                 setState(() {
-                  Internationalization.of(context).locale =
-                      Locale(dropdownValueLanguage, "");
+                  Internationalization.of(context)
+                      .changeLanguage(dropdownValueLanguage);
                 });
               },
             ),

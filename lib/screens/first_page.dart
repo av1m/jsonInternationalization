@@ -21,8 +21,7 @@ class _FirstPageState extends State<FirstPage> {
         backgroundColor: Colors.grey,
         title: Text(Internationalization.of(context).greetTo('current') +
             " : " +
-            Internationalization.of(context).greetTo('lang')
-        ),
+            Internationalization.of(context).greetTo('lang')),
       ),
       body: Center(
         child: Column(
@@ -68,8 +67,8 @@ class _FirstPageState extends State<FirstPage> {
                   Text(Internationalization.of(context).greetTo('changeLang')),
               onPressed: () {
                 setState(() {
-                  Internationalization.of(context).locale =
-                      Locale(dropdownValueLanguage, "");
+                  Internationalization.of(context)
+                      .changeLanguage(dropdownValueLanguage);
                 });
               },
             ),
